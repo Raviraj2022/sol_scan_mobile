@@ -14,7 +14,7 @@ import {
   Linking,
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-
+import { useRouter } from "expo-router";
 
 
 const RPC = "https://api.mainnet-beta.solana.com";
@@ -67,8 +67,8 @@ const timeAgo = (ts: number) => {
   if (sec < 86400) return `${Math.floor(sec / 3600)}h ago`;
   return `${Math.floor(sec / 86400)}d ago`;
 };
-export function WalletScreen(){
-
+export default function WalletScreen(){
+const router = useRouter();
      const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState<number | null>(null);
@@ -159,10 +159,10 @@ return (
             keyExtractor={(t) => t.mint}
             scrollEnabled={false}
             renderItem={({ item }) => (
-              <View style={s.row}>
+              <TouchableOpacity style={s.row} onPress={() => {router.push(`/token/${item.mint}`); }}>
                 <Text style={s.mint}>{short(item.mint, 6)}</Text>
                 <Text style={s.amount}>{item.amount}</Text>
-              </View>
+              </TouchableOpacity>
             )}
           />
         </>
