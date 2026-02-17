@@ -4,10 +4,15 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function explore() {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={s.safe} edges={["top"]}>
       <Text>explore</Text>
     </SafeAreaView>
   )
 }
 
-const styles = StyleSheet.create({})
+const s = StyleSheet.create({
+     safe: {
+    flex: 1,
+    backgroundColor: "#0D0D12",
+  },
+})

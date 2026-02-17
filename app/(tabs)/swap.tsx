@@ -1,3 +1,5 @@
+// app/(tabs)/swap.tsx
+// swap screen - at "/swap" route
 import { useState } from "react";
 import {
   View,
@@ -8,6 +10,7 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function SwapScreen() {
@@ -27,83 +30,88 @@ export default function SwapScreen() {
     if (!fromAmount) return Alert.alert("Enter an amount");
     Alert.alert(
       "Swap",
-      `Swapping ${fromAmount} ${fromToken} to ${toAmount} ${toToken}`,
+      `Swapping ${fromAmount} ${fromToken} to ${toAmount} ${toToken}`
     );
   };
 
   return (
-    <ScrollView>
-      <Text style={s.title}>Swap Tokens</Text>
+    <SafeAreaView style={s.safe} edges={["top"]}>
+      <ScrollView style={s.scroll} contentContainerStyle={s.content}>
+        <Text style={s.title}>Swap Tokens</Text>
 
-      {/* From Token Card */}
-      <View style={[s.card, { marginBottom: 10 }]}>
-        <View style={s.cardHeader}>
-          <TouchableOpacity style={s.tokenSelector}>
-            <View style={[s.tokenIcon, { backgroundColor: "#9945FF" }]}>
-              <Text style={s.tokenIconText}>S</Text>
-            </View>
-            <Text style={s.tokenName}>{fromToken}</Text>
-            <Ionicons name="chevron-down" size={18} color="#888" />
+        {/* From Token Card */}
+        <View style={[s.card, { marginBottom: 10 }]}>
+          <View style={s.cardHeader}>
+            <TouchableOpacity style={s.tokenSelector}>
+              <View style={[s.tokenIcon, { backgroundColor: "#9945FF" }]}>
+                <Text style={s.tokenIconText}>S</Text>
+              </View>
+              <Text style={s.tokenName}>{fromToken}</Text>
+              <Ionicons name="chevron-down" size={18} color="#888" />
+            </TouchableOpacity>
+            <TextInput
+              style={s.amountInput}
+              value={fromAmount}
+              onChangeText={setFromAmount}
+              keyboardType="numeric"
+              placeholder="0"
+              placeholderTextColor="#666"
+            />
+          </View>
+          <View style={s.cardFooter}>
+            <Text style={s.balanceText}>Balance: 0.0661 {fromToken}</Text>
+            <Text style={s.usdText}>$499.749</Text>
+          </View>
+        </View>
+
+        {/* Swap Arrow */}
+        <View style={s.arrowContainer}>
+          <TouchableOpacity style={s.swapArrow} onPress={swapTokens}>
+            <Ionicons name="arrow-down" size={20} color="#FFF" />
           </TouchableOpacity>
-          <TextInput
-            style={s.amountInput}
-            value={fromAmount}
-            onChangeText={setFromAmount}
-            keyboardType="numeric"
-            placeholder="0"
-            placeholderTextColor="#666"
-          />
         </View>
-        <View style={s.cardFooter}>
-          <Text style={s.balanceText}>Balance: 0.0661 {fromToken}</Text>
-          <Text style={s.usdText}>$499.749</Text>
-        </View>
-      </View>
 
-      {/* Swap Arrow */}
-      <View style={s.arrowContainer}>
-        <TouchableOpacity style={s.swapArrow} onPress={swapTokens}>
-          <Ionicons name="arrow-down" size={20} color="#FFF" />
+        {/* To Token Card */}
+        <View style={s.card}>
+          <View style={s.cardHeader}>
+            <TouchableOpacity style={s.tokenSelector}>
+              <View style={[s.tokenIcon, { backgroundColor: "#2775CA" }]}>
+                <Text style={s.tokenIconText}>$</Text>
+              </View>
+              <Text style={s.tokenName}>{toToken}</Text>
+              <Ionicons name="chevron-down" size={18} color="#888" />
+            </TouchableOpacity>
+            <TextInput
+              style={s.amountInput}
+              value={toAmount}
+              onChangeText={setToAmount}
+              keyboardType="numeric"
+              placeholder="0"
+              placeholderTextColor="#666"
+            />
+          </View>
+          <View style={s.cardFooter}>
+            <Text style={s.balanceText}>Balance: 250 {toToken}</Text>
+            <Text style={s.usdText}>$499.419</Text>
+          </View>
+        </View>
+
+        {/* Swap Button */}
+        <TouchableOpacity style={s.swapBtn} onPress={handleSwap}>
+          <Text style={s.swapBtnText}>Swap</Text>
         </TouchableOpacity>
-      </View>
-
-      {/* To Token Card */}
-      <View style={s.card}>
-        <View style={s.cardHeader}>
-          <TouchableOpacity style={s.tokenSelector}>
-            <View style={[s.tokenIcon, { backgroundColor: "#2775CA" }]}>
-              <Text style={s.tokenIconText}>$</Text>
-            </View>
-            <Text style={s.tokenName}>{toToken}</Text>
-            <Ionicons name="chevron-down" size={18} color="#888" />
-          </TouchableOpacity>
-          <TextInput
-            style={s.amountInput}
-            value={toAmount}
-            onChangeText={setToAmount}
-            keyboardType="numeric"
-            placeholder="0"
-            placeholderTextColor="#666"
-          />
-        </View>
-        <View style={s.cardFooter}>
-          <Text style={s.balanceText}>Balance: 250 {toToken}</Text>
-          <Text style={s.usdText}>$499.419</Text>
-        </View>
-      </View>
-
-      {/* Swap Button */}
-      <TouchableOpacity style={s.swapBtn} onPress={handleSwap}>
-        <Text style={s.swapBtnText}>Swap</Text>
-      </TouchableOpacity>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const s = StyleSheet.create({
-  scroll: {
+  safe: {
     flex: 1,
     backgroundColor: "#0D0D12",
+  },
+  scroll: {
+    flex: 1,
   },
   content: {
     paddingHorizontal: 20,
